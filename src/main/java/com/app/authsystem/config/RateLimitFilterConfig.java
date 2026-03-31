@@ -3,10 +3,19 @@ package com.app.authsystem.config;
 import com.app.authsystem.filter.JwtAuthenticationFilter;
 import com.app.authsystem.filter.RateLimitFilter;
 import com.app.authsystem.filter.UsageTrackingFilter;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@OpenAPIDefinition(
+    info = @Info(
+        title = "Authsystem API",
+        version = "1.0",
+        description = "API documentation for Authsystem with JWT, rate limiting, and user management."
+    )
+)
 @Configuration
 public class RateLimitFilterConfig {
     @Bean
