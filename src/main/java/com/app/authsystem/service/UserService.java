@@ -1,6 +1,7 @@
 package com.app.authsystem.service;
 
 import com.app.authsystem.entity.User;
+import com.app.authsystem.exception.ResourceNotFoundException;
 import com.app.authsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
     }
 
     public List<User> getAllUsers() {
