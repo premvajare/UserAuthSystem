@@ -13,6 +13,9 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -51,15 +54,21 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ApiErrorResponse> build(HttpStatus status, String message, String path, Map<String, String> validationErrors) {
+        String traceId = null;
+        try {
+            traceId = (String) RequestContextHolder.currentRequestAttributes().getAttribute("traceId", RequestAttributes.SCOPE_REQUEST);
+        } catch (Exception ignored) {
+            // fallback if not in web context
+        }
         ApiErrorResponse body = new ApiErrorResponse(
                 LocalDateTime.now(),
                 status.value(),
                 status.getReasonPhrase(),
                 message,
                 path,
-                validationErrors
+                validationErrors,
+                traceId
         );
         return ResponseEntity.status(status).body(body);
     }
 }
-

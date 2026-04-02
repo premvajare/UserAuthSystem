@@ -37,7 +37,11 @@ public class RateLimitFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             res.setStatus(429);
-            res.getWriter().write("Too Many Requests - Rate limit exceeded");
+            res.setContentType("application/json");
+            String traceId = (String) req.getAttribute("traceId");
+            String json = String.format("{\"timestamp\":\"%s\",\"status\":429,\"error\":\"Too Many Requests\",\"message\":\"Rate limit exceeded\",\"path\":\"%s\",\"traceId\":\"%s\"}",
+                    java.time.LocalDateTime.now(), req.getRequestURI(), traceId != null ? traceId : "");
+            res.getWriter().write(json);
         }
     }
 }

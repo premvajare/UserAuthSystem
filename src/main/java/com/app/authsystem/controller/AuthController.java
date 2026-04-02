@@ -3,7 +3,6 @@ package com.app.authsystem.controller;
 import com.app.authsystem.config.JwtUtil;
 import com.app.authsystem.dto.LoginRequest;
 import com.app.authsystem.dto.RegisterRequest;
-import com.app.authsystem.exception.UnauthorizedException;
 import com.app.authsystem.service.AuthService;
 import com.app.authsystem.entity.User;
 import jakarta.validation.Valid;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
 
     @Autowired
@@ -31,21 +30,12 @@ public class AuthController {
     @PostMapping("/login")
     public Map<String, Object> login(@Valid @RequestBody LoginRequest request) {
         User user = authService.loginAndGetUser(request);
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRole());
         Map<String, Object> response = new HashMap<>();
         response.put("email", user.getEmail());
         response.put("name", user.getName());
+        response.put("role", user.getRole());
         response.put("token", token);
         return response;
-    }
-
-    @PostMapping("/token")
-    public String getToken(@Valid @RequestBody LoginRequest request) {
-        // Validate user
-        String loginResult = authService.login(request);
-        if (!"Login successful!".equals(loginResult)) {
-            throw new UnauthorizedException("Invalid credentials");
-        }
-        return jwtUtil.generateToken(request.getEmail());
     }
 }

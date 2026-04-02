@@ -30,6 +30,7 @@ public class AuthService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword())); // Hash password
+        user.setRole(request.getRole() != null ? request.getRole().toUpperCase() : "USER");
 
         userRepository.save(user);
 

@@ -2,6 +2,7 @@ package com.app.authsystem.controller;
 
 import com.app.authsystem.dto.ApiUsageView;
 import com.app.authsystem.service.AnalyticsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/analytics")
+@RequestMapping("/api/v1/analytics")
+@SecurityRequirement(name = "bearerAuth")
 public class AnalyticsController {
 
     @Autowired
@@ -27,4 +29,3 @@ public class AnalyticsController {
         return analyticsService.getRecentUsage();
     }
 }
-

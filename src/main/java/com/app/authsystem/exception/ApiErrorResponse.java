@@ -4,21 +4,23 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 public class ApiErrorResponse {
-    private LocalDateTime timestamp;
-    private int status;
-    private String error;
-    private String message;
-    private String path;
-    private Map<String, String> validationErrors;
+    private final LocalDateTime timestamp;
+    private final int status;
+    private final String error;
+    private final String message;
+    private final String path;
+    private final Map<String, String> validationErrors;
+    private final String traceId;
 
     public ApiErrorResponse(LocalDateTime timestamp, int status, String error, String message, String path,
-                            Map<String, String> validationErrors) {
+                            Map<String, String> validationErrors, String traceId) {
         this.timestamp = timestamp;
         this.status = status;
         this.error = error;
         this.message = message;
         this.path = path;
         this.validationErrors = validationErrors;
+        this.traceId = traceId;
     }
 
     public LocalDateTime getTimestamp() {
@@ -44,5 +46,8 @@ public class ApiErrorResponse {
     public Map<String, String> getValidationErrors() {
         return validationErrors;
     }
-}
 
+    public String getTraceId() {
+        return traceId;
+    }
+}
